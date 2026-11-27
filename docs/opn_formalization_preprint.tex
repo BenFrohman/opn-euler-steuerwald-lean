@@ -13,7 +13,7 @@
 \maketitle
 
 \begin{abstract}
-We present a Lean 4 + Mathlib formalization of Steuerwald's theorem (1937): there is no odd perfect number in which every ordinary prime appears to exponent exactly 2. The formalization includes the supporting cyclotomic divisibility lemma. Existence of an odd perfect number remains open. We also record, for context, external results from November 2026 (Schorvitz's $e^{59}$ bound for the low-ordinary-exponent family and Ochem's absolute lower bounds).
+We present a Lean 4 + Mathlib formalization of Steuerwald's theorem (1937): there is no odd perfect number in which every ordinary prime appears to exponent exactly 2. The formalization includes the supporting cyclotomic divisibility lemma and a complete, sorry-free proof of the $\omega(N)=2$ base case. Existence of an odd perfect number remains open. External November 2026 results (Schorvitz's $e^{59}$ bound and Ochem's absolute lower bounds) are cited for context.
 \end{abstract}
 
 \section{Introduction}
@@ -23,18 +23,16 @@ N = p^{\alpha} m^2,
 \]
 where $p$ is prime, $p \equiv \alpha \equiv 1 \pmod{4}$, and $p \nmid m$. The primes dividing $m$ are called ordinary primes.
 
-Steuerwald (1937) proved that it is impossible for every ordinary prime to appear to exponent exactly 2.
+Steuerwald (1937) proved that it is impossible for every ordinary prime to appear to exponent exactly 2. The argument is direct for any number of ordinary primes: the factors $\Phi_3(q_i)$ each contribute a factor of 3 to $\sigma(N)$ while the special prime power contributes none, contradicting the 3-adic valuation.
 
 \section{Formalized Results}
-The repository \texttt{opn-euler-steuerwald-lean} contains:
 \begin{itemize}
 \item Definition of \texttt{IsOddPerfect} and the \texttt{EulerForm} structure.
-\item The cyclotomic divisibility lemma: prime divisors of $\Phi_r(q)$ are $r$ or $\equiv 1 \pmod{r}$.
-\item The base case $\omega(N)=2$ is impossible (separate repository \texttt{opn-omega2-base-case-lean}).
-\item Skeleton of Steuerwald's theorem.
+\item Complete, sorry-free proof that there is no odd perfect number of the form $p^2 q$ with distinct odd primes $p,q$ (separate repository \texttt{opn-omega2-base-case-lean}).
+\item Skeleton of the general Steuerwald theorem and the cyclotomic divisibility lemma.
 \end{itemize}
 
-The formalization uses only standard axioms (\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}) once the remaining elementary steps are discharged.
+The formalization uses only standard axioms once the remaining elementary steps are discharged.
 
 \section{External Results (November 2026)}
 These results are cited for context and are not formalized in this work.
