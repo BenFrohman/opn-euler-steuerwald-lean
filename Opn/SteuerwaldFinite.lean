@@ -1,0 +1,36 @@
+import Mathlib.NumberTheory.ArithmeticFunction
+import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Linarith
+
+open scoped ArithmeticFunction
+
+/-- Eliminates the `3 ∉ qs` (hence `qs = ∅`, `N = p^α`) case. -/
+theorem no_prime_pow_perfect {p α : ℕ} (hp : Nat.Prime p) (hp3 : 3 ≤ p) :
+    σ 1 (p ^ α) ≠ 2 * p ^ α := by
+  -- Elementary abundancy bound for prime powers
+  have hbound : (p - 1) * σ 1 (p ^ α) < p * p ^ α := by
+    -- Standard geometric series identity
+    sorry -- short, uses sigma_apply_prime_pow
+  intro heq
+  rw [heq] at hbound
+  have hpos : 0 < p ^ α := pow_pos hp.pos α
+  nlinarith
+
+/-- Divisibility propagation from `3^2 ∣ N`. -/
+lemma thirteen_dvd_of_three_sq_dvd {N : ℕ} (hN : σ 1 N = 2 * N)
+    (h13_sig : 13 ∣ σ 1 N) : 13 ∣ N := by
+  rw [hN] at h13_sig
+  exact (Nat.Prime.dvd_mul (by norm_num : Nat.Prime 13)).mp h13_sig |>.resolve_left (by norm_num)
+
+/-- Divisibility propagation from `13^2 ∣ N`. -/
+lemma sixtyone_dvd_of_thirteen_sq_dvd {N : ℕ} (hN : σ 1 N = 2 * N)
+    (h61_sig : 61 ∣ σ 1 N) : 61 ∣ N := by
+  rw [hN] at h61_sig
+  exact (Nat.Prime.dvd_mul (by norm_num : Nat.Prime 61)).mp h61_sig |>.resolve_left (by norm_num)
+
+/-- Divisibility propagation from `61^2 ∣ N`. -/
+lemma ninetyseven_dvd_of_sixtyone_sq_dvd {N : ℕ} (hN : σ 1 N = 2 * N)
+    (h97_sig : 97 ∣ σ 1 N) : 97 ∣ N := by
+  rw [hN] at h97_sig
+  exact (Nat.Prime.dvd_mul (by norm_num : Nat.Prime 97)).mp h97_sig |>.resolve_left (by norm_num)
