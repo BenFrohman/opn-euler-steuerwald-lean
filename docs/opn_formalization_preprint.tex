@@ -1,0 +1,51 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{Machine-Checked Formalization of Steuerwald's Theorem\\and Related Classical Constraints on Odd Perfect Numbers}
+\author{Benjamin Stanley Frohman\\{\small ORCID: 0009-0006-7068-3718}}
+\date{November 27, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We present a Lean 4 + Mathlib formalization of Steuerwald's theorem (1937): there is no odd perfect number in which every ordinary prime appears to exponent exactly 2. The formalization includes the supporting cyclotomic divisibility lemma. Existence of an odd perfect number remains open. We also record, for context, external results from November 2026 (Schorvitz's $e^{59}$ bound for the low-ordinary-exponent family and Ochem's absolute lower bounds).
+\end{abstract}
+
+\section{Introduction}
+An odd perfect number $N$ (if one exists) must satisfy Euler's form
+\[
+N = p^{\alpha} m^2,
+\]
+where $p$ is prime, $p \equiv \alpha \equiv 1 \pmod{4}$, and $p \nmid m$. The primes dividing $m$ are called ordinary primes.
+
+Steuerwald (1937) proved that it is impossible for every ordinary prime to appear to exponent exactly 2.
+
+\section{Formalized Results}
+The repository \texttt{opn-euler-steuerwald-lean} contains:
+\begin{itemize}
+\item Definition of \texttt{IsOddPerfect} and the \texttt{EulerForm} structure.
+\item The cyclotomic divisibility lemma: prime divisors of $\Phi_r(q)$ are $r$ or $\equiv 1 \pmod{r}$.
+\item The base case $\omega(N)=2$ is impossible (separate repository \texttt{opn-omega2-base-case-lean}).
+\item Skeleton of Steuerwald's theorem.
+\end{itemize}
+
+The formalization uses only standard axioms (\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}) once the remaining elementary steps are discharged.
+
+\section{External Results (November 2026)}
+These results are cited for context and are not formalized in this work.
+
+\subsection{Schorvitz (2026)}
+If every ordinary prime factor has exponent 2 or 4, then the smallest prime factor of $N$ is at most $e^{59} \approx 4.2 \times 10^{25}$. Fixing the Euler prime power determines at most one such number. (Unrefereed; see \url{https://schorvitz.com/opn-e59.zip}.)
+
+\subsection{Ochem lower bounds}
+Published: $N > 10^{1500}$ (Ochem--Rao 2012). Computational extensions report $N > 10^{2200}$ (Ochem project page).
+
+\section{Conclusion}
+The formalization provides a reusable, machine-checked foundation for classical constraints on odd perfect numbers. Further work can build on it (equal-exponent cases, factor chains, low-exponent sieves). Existence remains open.
+
+\end{document}
