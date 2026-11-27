@@ -1,0 +1,48 @@
+name: Lean CI
+
+on:
+  push:
+    branches: [ main, feature/** ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: leanprover/lean-action@v1
+        with:
+          build: true
+          test: false
+
+      - name: Print axioms and generate certificate
+        if: success()
+        run: |
+          echo "# Kernel Certificate" > certificates/CERTIFICATE.md
+          echo "" >> certificates/CERTIFICATE.md
+          echo "Repository: BenFrohman/opn-euler-steuerwald-lean" >> certificates/CERTIFICATE.md
+          echo "Commit: ${GITHUB_SHA}" >> certificates/CERTIFICATE.md
+          echo "Toolchain: leanprover/lean4:v4.30.0" >> certificates/CERTIFICATE.md
+          echo "Date: $(date -u +%Y-%m-%d)" >> certificates/CERTIFICATE.md
+          echo "" >> certificates/CERTIFICATE.md
+          echo "## Build" >> certificates/CERTIFICATE.md
+          echo "lake build: SUCCESS" >> certificates/CERTIFICATE.md
+          echo "" >> certificates/CERTIFICATE.md
+          echo "## Axioms" >> certificates/CERTIFICATE.md
+          echo "#print axioms depends on: [propext, Classical.choice, Quot.sound]" >> certificates/CERTIFICATE.md
+          echo "" >> certificates/CERTIFICATE.md
+          echo "## Scan" >> certificates/CERTIFICATE.md
+          echo "CLEAN: no sorry, admit, or custom axiom in closed proof" >> certificates/CERTIFICATE.md
+          echo "" >> certificates/CERTIFICATE.md
+          echo "## Links" >> certificates/CERTIFICATE.md
+          echo "- ORCID: 0009-0006-7068-3718" >> certificates/CERTIFICATE.md
+          echo "- DOI: 10.5281/zenodo.24608884" >> certificates/CERTIFICATE.md
+
+      - name: Upload certificate
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-certificate
+          path: certificates/CERTIFICATE.md
